@@ -6,8 +6,11 @@ import Upload from "./pages/Upload";
 import Compare from "./pages/Compare";
 import PageNotFound from "./pages/PageNotFound";
 import Navbar from "./parts/Navbar";
+import { useState } from "react";
 
 function App() {
+  const [files, setFiles] = useState<File[]>([])
+
   return (
     <div className="App">
       <BrowserRouter>
@@ -15,7 +18,7 @@ function App() {
         <div className="content">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/upload" element={<Upload />} />
+            <Route path="/upload" element={<Upload files={files} setFiles={setFiles} />} />
             <Route path="/offers/:id/*" element={<OfferDetails />} />
             <Route path="/offers" element={<Offers />} />
             <Route path="/compare" element={<Compare />} />

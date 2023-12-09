@@ -1,7 +1,10 @@
-const Upload = () => {
+import FileSelector from "../parts/FileSelector";
+import { FileProps } from "../types";
+
+const Upload = ({ files, setFiles }: FileProps) => {    
     return (
         <div className="upload">
-            <h2>Upload</h2>
+            <FileSelector files={files} setFiles={setFiles} />
         </div>
     );
 }

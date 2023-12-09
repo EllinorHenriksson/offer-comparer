@@ -38,3 +38,42 @@
   margin: 40px auto;
   padding: 20px;
 }
+
+.home a:hover {
+  color: #f14e35;
+}
+
+.dropbox {
+  max-width: 400px;
+  height: 200px;
+  background-color: #f2f2f2;
+  margin: 20px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  gap: 5px;
+}
+
+.dropbox .file-formats {
+  font-size: 0.9rem;
+}
+
+.dropbox label {
+  width: max-content;
+  padding: 10px;
+  background-color: #f14e35;
+  cursor: pointer;
+  font-weight: bold;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.dropbox input {
+  opacity: 0;
+  height: 0px;
+}
+
