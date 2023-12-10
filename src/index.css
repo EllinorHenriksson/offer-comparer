@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Afacad&display=swap');
 
+/* Basic */
 * {
   margin: 0;
   font-family: 'Afacad', sans-serif;
@@ -39,12 +40,36 @@
   padding: 20px;
 }
 
+/* Buttons */
+.small-button {
+  padding: 5px;
+  background-color: #f14e35;
+  cursor: pointer;
+  font-weight: bold;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+}
+
+.large-button {
+  width: max-content;
+  padding: 10px;
+  background-color: #f14e35;
+  cursor: pointer;
+  font-weight: bold;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+/* Home page */
 .home a:hover {
   color: #f14e35;
 }
 
+/* Upload page */
 .dropbox {
-  max-width: 400px;
   height: 200px;
   background-color: #f2f2f2;
   margin: 20px auto;
@@ -60,20 +85,23 @@
   font-size: 0.9rem;
 }
 
-.dropbox label {
-  width: max-content;
-  padding: 10px;
-  background-color: #f14e35;
-  cursor: pointer;
-  font-weight: bold;
-  color: #ffffff;
-  border: none;
-  border-radius: 5px;
-  font-size: 1rem;
-}
-
 .dropbox input {
   opacity: 0;
   height: 0px;
 }
+
+.parsed-files {
+  list-style: none;
+  padding: 0;
+}
+
+.parsed-files li {
+  display: flex;
+  justify-content: space-between;
+  background-color: #f2f2f2;
+  padding: 5px;
+  border-radius: 5px;
+  margin: 5px auto;
+}
+
 

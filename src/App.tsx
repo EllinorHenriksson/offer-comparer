@@ -7,9 +7,10 @@ import Compare from "./pages/Compare";
 import PageNotFound from "./pages/PageNotFound";
 import Navbar from "./parts/Navbar";
 import { useState } from "react";
+import { Offer } from "./types";
 
 function App() {
-  const [files, setFiles] = useState<File[]>([])
+  const [offers, setOffers] = useState<Offer[]>([])
 
   return (
     <div className="App">
@@ -18,7 +19,7 @@ function App() {
         <div className="content">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/upload" element={<Upload files={files} setFiles={setFiles} />} />
+            <Route path="/upload" element={<Upload offers={offers} setOffers={setOffers} />} />
             <Route path="/offers/:id/*" element={<OfferDetails />} />
             <Route path="/offers" element={<Offers />} />
             <Route path="/compare" element={<Compare />} />
