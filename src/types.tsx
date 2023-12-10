@@ -1,6 +1,6 @@
   export type Offer = {
     fileName: string,
-    fileData: object
+    fileData: any
   }
 
   export type OfferProps = {
