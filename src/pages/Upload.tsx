@@ -4,12 +4,13 @@ import { useState } from "react";
 
 const Upload = ({ offers, setOffers }: OfferProps) => {
   const [dragActive, setDragActive] = useState(false);
-  const [flash, setFlash] = useState<string | null>(null)
+  const [flash, setFlash] = useState<string | null>('')
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFlash(null)
+    setFlash('')
     if (e.target.files) {
-      parseFiles(Array.from(e.target.files))
+      const uniqueFiles = getUniqueFiles(Array.from(e.target.files))
+      parseFiles(uniqueFiles)
       e.target.value = ""
     }
   }
@@ -25,10 +26,10 @@ const Upload = ({ offers, setOffers }: OfferProps) => {
 
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
-    setFlash(null)
+    setFlash('')
     if (e.dataTransfer.files) {
-      const files = Array.from(e.dataTransfer.files)
-      const correctFiles = getCorrectFiles(files)
+      const uniqueFiles = getUniqueFiles(Array.from(e.dataTransfer.files))
+      const correctFiles = getCorrectFiles(uniqueFiles)
       parseFiles(correctFiles)
     }
     setDragActive(false)
@@ -40,16 +41,46 @@ const Upload = ({ offers, setOffers }: OfferProps) => {
     setOffers(currentOffers)
   }
 
+  function getUniqueFiles(files: File[]) {
+    const uniqueFiles: File[] = []
+    let duplicateFiles: string = ''
+    files.forEach(file => {     
+      if (isUnique(file.name)) {      
+        uniqueFiles.push(file)
+      } else {
+        duplicateFiles += `\n${file.name} was already added`       
+      }
+    })
+    if (duplicateFiles.length > 0) {
+      setFlash(duplicateFiles)
+    }
+    return uniqueFiles
+  }
+
+  function isUnique(fileName: string) {
+    let isUnique = true
+    offers.forEach(offer => {
+      if (offer.fileName === fileName) {
+        isUnique = false
+      }
+    })
+    return isUnique
+  }
+
   function getCorrectFiles(files: File[]) {
     const correctFiles: File[] = []
+    let incorrectFiles: string = ''
     const regex = /.csv$/
     files.forEach(file => {
       if (regex.test(file.name)) {
         correctFiles.push(file)
       } else {
-        setFlash(`${file.name} does not have the correct csv file format`)
+        incorrectFiles += `\n${file.name} does not have the correct file format`
       }
     })
+    if (incorrectFiles.length > 0) {
+      setFlash(incorrectFiles)
+    }
     return correctFiles
   }
 
@@ -60,7 +91,10 @@ const Upload = ({ offers, setOffers }: OfferProps) => {
           Papa.parse(file, {
             header: true,
             complete: (results) => {
-              resolve({ fileName: file.name, fileData: results.data })
+              resolve({
+                fileName: file.name,
+                fileData: results.data
+              })
             },
             error: (error, file) => {
               reject(error)

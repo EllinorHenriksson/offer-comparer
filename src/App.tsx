@@ -24,7 +24,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/upload" element={<Upload offers={offers} setOffers={setOffers} />} />
             <Route path="/offers/:id/*" element={<OfferDetails />} />
-            <Route path="/offers" element={<Offers />} />
+            <Route path="/offers" element={<Offers offers={offers} setOffers={setOffers}/>} />
             <Route path="/compare" element={<Compare />} />
             <Route path="*" element={<PageNotFound />} />
           </Routes>
