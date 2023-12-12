@@ -4,12 +4,17 @@ import { useState } from "react";
 
 const Upload = ({ offers, setOffers }: OfferProps) => {
   const [dragActive, setDragActive] = useState(false);
-  const [flash, setFlash] = useState<string | null>('')
+  const [flashMessages, setFlashMessages] = useState<string[]>([])
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFlash('')
     if (e.target.files) {
-      const uniqueFiles = getUniqueFiles(Array.from(e.target.files))
+      const { uniqueFiles, duplicateFiles } = groupOnUniqueness(Array.from(e.target.files))
+      if (duplicateFiles.length) {
+        setFlashMessages(generateMessagesDuplicate(duplicateFiles))
+        setTimeout(() => {
+          setFlashMessages([])
+        }, 5000);
+      }      
       parseFiles(uniqueFiles)
       e.target.value = ""
     }
@@ -26,10 +31,15 @@ const Upload = ({ offers, setOffers }: OfferProps) => {
 
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
-    setFlash('')
     if (e.dataTransfer.files) {
-      const uniqueFiles = getUniqueFiles(Array.from(e.dataTransfer.files))
-      const correctFiles = getCorrectFiles(uniqueFiles)
+      const { uniqueFiles, duplicateFiles } = groupOnUniqueness(Array.from(e.dataTransfer.files))
+      const { correctFiles, incorrectFiles } = groupOnCorrectness(uniqueFiles)
+      if (duplicateFiles.length || incorrectFiles.length) {
+        setFlashMessages([...generateMessagesDuplicate(duplicateFiles), ...generateMessagesIncorrect(incorrectFiles)])
+        setTimeout(() => {
+          setFlashMessages([])
+        }, 5000);
+      }
       parseFiles(correctFiles)
     }
     setDragActive(false)
@@ -41,20 +51,18 @@ const Upload = ({ offers, setOffers }: OfferProps) => {
     setOffers(currentOffers)
   }
 
-  function getUniqueFiles(files: File[]) {
+  function groupOnUniqueness(files: File[]) {
     const uniqueFiles: File[] = []
-    let duplicateFiles: string = ''
+    const duplicateFiles: File[] = []
     files.forEach(file => {     
       if (isUnique(file.name)) {      
         uniqueFiles.push(file)
       } else {
-        duplicateFiles += `\n${file.name} was already added`       
+        duplicateFiles.push(file)       
       }
     })
-    if (duplicateFiles.length > 0) {
-      setFlash(duplicateFiles)
-    }
-    return uniqueFiles
+    
+    return { uniqueFiles, duplicateFiles }
   }
 
   function isUnique(fileName: string) {
@@ -67,21 +75,26 @@ const Upload = ({ offers, setOffers }: OfferProps) => {
     return isUnique
   }
 
-  function getCorrectFiles(files: File[]) {
+  function generateMessagesDuplicate(files: File[]) {
+    return files.map(file => `${file.name} has already been added`)
+  }
+
+  function generateMessagesIncorrect(files: File[]) {
+    return files.map(file => `${file.name} does not have the correct format`)
+  }
+
+  function groupOnCorrectness(files: File[]) {
     const correctFiles: File[] = []
-    let incorrectFiles: string = ''
+    const incorrectFiles: File[] = []
     const regex = /.csv$/
     files.forEach(file => {
       if (regex.test(file.name)) {
         correctFiles.push(file)
       } else {
-        incorrectFiles += `\n${file.name} does not have the correct file format`
+        incorrectFiles.push(file)
       }
     })
-    if (incorrectFiles.length > 0) {
-      setFlash(incorrectFiles)
-    }
-    return correctFiles
+    return { correctFiles, incorrectFiles}
   }
 
   async function parseFiles(files: File[]) {
@@ -128,7 +141,9 @@ const Upload = ({ offers, setOffers }: OfferProps) => {
           ))
         }
       </ul>
-      {flash && <p>{flash}</p>}
+      {flashMessages.length > 0 && <div className="flash">{flashMessages.map(message => (
+        <p key={message}>{message}</p>
+      ))}</div>}
     </div>
   );
 }

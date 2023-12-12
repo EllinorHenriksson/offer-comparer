@@ -11,9 +11,6 @@ import { Offer } from "./types";
 
 function App() {
   const [offers, setOffers] = useState<Offer[]>([])
-  useEffect(() => {
-    console.log('New state of offers:', offers);    
-  }, [offers])
 
   return (
     <div className="App">

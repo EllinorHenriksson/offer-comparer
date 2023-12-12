@@ -1,16 +1,15 @@
+import { Link } from "react-router-dom";
 import { OfferProps } from "../types";
 
-const Offers = ({ offers, setOffers }: OfferProps) => {
-  const handleClick = (fileName: string) => {
-    //Route to offers/:filename
-  }
-  
+const Offers = ({ offers, setOffers }: OfferProps) => {  
   return (
     <div className="offers">
-      <div className="offer-list">
+      <div>
         {
           offers.map(offer => (
-            <li key={offer.fileName} onClick={() => handleClick(offer.fileName)}>{offer.fileName}</li>
+            <div key={offer.fileName}>
+            <Link to={`/offers/${offer.fileName}`}>{offer.fileName}</Link>
+            </div>
           ))
         }
       </div>

@@ -108,4 +108,8 @@
   box-shadow: 0 0 20px #333;
 }
 
-
+.flash {
+  border: 1px solid #f14e35;
+  border-radius: 5px;
+  padding: 5px;
+}
