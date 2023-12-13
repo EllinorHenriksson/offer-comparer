@@ -6,7 +6,7 @@ import Upload from "./pages/Upload";
 import Compare from "./pages/Compare";
 import PageNotFound from "./pages/PageNotFound";
 import Navbar from "./parts/Navbar";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Offer } from "./types";
 
 function App() {
@@ -20,7 +20,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/upload" element={<Upload offers={offers} setOffers={setOffers} />} />
-            <Route path="/offers/:id/*" element={<OfferDetails />} />
+            <Route path="/offers/:id/*" element={<OfferDetails offers={offers} />} />
             <Route path="/offers" element={<Offers offers={offers} setOffers={setOffers}/>} />
             <Route path="/compare" element={<Compare />} />
             <Route path="*" element={<PageNotFound />} />

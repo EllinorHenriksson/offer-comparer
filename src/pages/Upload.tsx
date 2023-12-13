@@ -125,6 +125,7 @@ const Upload = ({ offers, setOffers }: OfferProps) => {
 
   return (
     <div className="upload">
+      <h2>Upload</h2>
       <div className={`dropbox ${dragActive ? 'drag-active' : ''}`} onDragEnter={handleDrag} onDragLeave={handleDrag} onDragOver={handleDrag} onDrop={handleDrop}>
         <label className="large-button" htmlFor="file-input">Select Files</label>
         <input id="file-input" type="file" accept=".csv" multiple onChange={e => handleFileChange(e)} />
