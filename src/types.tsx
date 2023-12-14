@@ -1,6 +1,6 @@
-export type Offer = {
+export type OfferType = {
   fileName: string,
-  parts: ProductPart[],
+  products: ProductPartWithChildren[],
   cost: number
 }
 
@@ -14,8 +14,13 @@ export type ProductPart = {
   parent: string
 }
 
+export type ProductPartWithChildren = {
+  productPart: ProductPart,
+  children: ProductPartWithChildren[]
+}
+
 export type OfferProps = {
-  offers: Offer[],
-  setOffers: (a: Offer[]) => void
+  offers: OfferType[],
+  setOffers: (a: OfferType[]) => void
 }
 

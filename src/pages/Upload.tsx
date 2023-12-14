@@ -1,5 +1,5 @@
 import Papa from "papaparse";
-import { Offer, OfferProps, ProductPart } from "../types";
+import { OfferType, OfferProps, ProductPart, ProductPartWithChildren } from "../types";
 import { useState } from "react";
 
 const Upload = ({ offers, setOffers }: OfferProps) => {
@@ -100,17 +100,17 @@ const Upload = ({ offers, setOffers }: OfferProps) => {
   async function parseFiles(files: File[]) {
     try {
       const newOffers = await Promise.all(files.map(file =>
-        new Promise<Offer>((resolve, reject) =>
+        new Promise<OfferType>((resolve, reject) =>
           Papa.parse(file, {
             header: true,
             skipEmptyLines: true,
             dynamicTyping: true,
             complete: (results) => {
-              const parts = transformData(results.data)
+              const productPartsWithChildren = transformData(results.data)
               resolve({
                 fileName: file.name,
-                parts,
-                cost: calcCost(parts)
+                products: productPartsWithChildren,
+                cost: calcCost(productPartsWithChildren)
               })
             },
             error: (error, file) => {
@@ -127,14 +127,15 @@ const Upload = ({ offers, setOffers }: OfferProps) => {
     }
   }
 
-  const transformData = (data: any[]): ProductPart[] => {
-    const transformedData = data.map((item: any) => {
+  const transformData = (data: any[]): ProductPartWithChildren[] => {
+    const parts = data.map((item: any) => {
       let price = null
       if (item['Price ($)']) {
         price = parseInt(item['Price ($)'].replaceAll(/\$|,/g, ''))
       }
 
       return {
+        productPart: {
         name: item['Name'],
         type: item['Type'],
         quantity: item['Quantity'],
@@ -142,16 +143,36 @@ const Upload = ({ offers, setOffers }: OfferProps) => {
         failureRate: item['Failure rate (1/year)'],
         description: item['Description'],
         parent: item['Parent']
-      }
+      },
+      children: []
+    }
     })
-    return transformedData
+
+    return nestParts(parts)
   }
 
-  const calcCost = (parts: ProductPart[]) => {
+  function nestParts (parts: ProductPartWithChildren[]): ProductPartWithChildren[] {
+    const products = parts.filter(part => part.productPart.type === 'Product')
+    products.forEach(product => {
+      recursiveFunction(product, parts)
+    })
+
+    return products
+  }
+
+  function recursiveFunction (parent: ProductPartWithChildren, parts: ProductPartWithChildren[]) {
+    const children = parts.filter(part => part.productPart.parent === parent.productPart.name)
+    parent.children = children
+    children.forEach(child => {
+      recursiveFunction(child, parts)
+    })
+  }
+
+  const calcCost = (data: ProductPartWithChildren[]) => {
     let sum = 0
-    parts.forEach(part => {      
-      if (part.price) {
-        sum += part.price
+    data.forEach(item => {      
+      if (item.productPart.price) {
+        sum += item.productPart.price
       }
     })
     return sum

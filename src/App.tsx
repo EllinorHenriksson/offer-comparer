@@ -7,10 +7,10 @@ import Compare from "./pages/Compare";
 import PageNotFound from "./pages/PageNotFound";
 import Navbar from "./parts/Navbar";
 import { useState } from "react";
-import { Offer } from "./types";
+import { OfferType } from "./types";
 
 function App() {
-  const [offers, setOffers] = useState<Offer[]>([])
+  const [offers, setOffers] = useState<OfferType[]>([])
 
   return (
     <div className="App">
