@@ -30,7 +30,7 @@
   padding: 6px;
 }
 
-.navbar a:hover {
+.navbar a:hover, .navbar a:active {
   color: #f14e35;
 }
 
@@ -63,19 +63,18 @@
   font-size: 1rem;
 }
 
-.small-button:hover, .large-button:hover {
-  background-color: #d9422b;
-  transition: 0.7s;
+.large-button:hover, .small-button:hover {
+  transition: 0.3s;
+  box-shadow: 0 2px 5px #33333380;
 }
 
 .small-button:active, .large-button:active {
-  background-color: #d9422b;
+  background-color: #f3ada2;
 }
 
 /* Home page */
 .home a:hover {
   color: #f14e35;
-  transition: 0.7s;
 }
 
 .home a:active {
@@ -120,6 +119,7 @@
 
 .drag-active {
   box-shadow: 0 0 15px #33333380;
+  transition: 0.5s;
 }
 
 .flash {
@@ -144,4 +144,16 @@
 .offers a:hover {
 transform: translateX(5px);
 transition: 0.7s;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+tr {
+  border: 1px solid #333;
+}
+
+.part-container {
+  display: flex;
 }

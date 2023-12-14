@@ -1,5 +1,5 @@
 import Papa from "papaparse";
-import { Offer, OfferProps } from "../types";
+import { Offer, OfferProps, ProductPart } from "../types";
 import { useState } from "react";
 
 const Upload = ({ offers, setOffers }: OfferProps) => {
@@ -14,7 +14,7 @@ const Upload = ({ offers, setOffers }: OfferProps) => {
         setTimeout(() => {
           setFlashMessages([])
         }, 5000);
-      }      
+      }
       parseFiles(uniqueFiles)
       e.target.value = ""
     }
@@ -54,14 +54,14 @@ const Upload = ({ offers, setOffers }: OfferProps) => {
   function groupOnUniqueness(files: File[]) {
     const uniqueFiles: File[] = []
     const duplicateFiles: File[] = []
-    files.forEach(file => {     
-      if (isUnique(file.name)) {      
+    files.forEach(file => {
+      if (isUnique(file.name)) {
         uniqueFiles.push(file)
       } else {
-        duplicateFiles.push(file)       
+        duplicateFiles.push(file)
       }
     })
-    
+
     return { uniqueFiles, duplicateFiles }
   }
 
@@ -94,7 +94,7 @@ const Upload = ({ offers, setOffers }: OfferProps) => {
         incorrectFiles.push(file)
       }
     })
-    return { correctFiles, incorrectFiles}
+    return { correctFiles, incorrectFiles }
   }
 
   async function parseFiles(files: File[]) {
@@ -103,10 +103,14 @@ const Upload = ({ offers, setOffers }: OfferProps) => {
         new Promise<Offer>((resolve, reject) =>
           Papa.parse(file, {
             header: true,
+            skipEmptyLines: true,
+            dynamicTyping: true,
             complete: (results) => {
+              const parts = transformData(results.data)
               resolve({
                 fileName: file.name,
-                fileData: results.data
+                parts,
+                cost: calcCost(parts)
               })
             },
             error: (error, file) => {
@@ -121,6 +125,36 @@ const Upload = ({ offers, setOffers }: OfferProps) => {
     } catch (error) {
       console.log(error);
     }
+  }
+
+  const transformData = (data: any[]): ProductPart[] => {
+    const transformedData = data.map((item: any) => {
+      let price = null
+      if (item['Price ($)']) {
+        price = parseInt(item['Price ($)'].replaceAll(/\$|,/g, ''))
+      }
+
+      return {
+        name: item['Name'],
+        type: item['Type'],
+        quantity: item['Quantity'],
+        price: price,
+        failureRate: item['Failure rate (1/year)'],
+        description: item['Description'],
+        parent: item['Parent']
+      }
+    })
+    return transformedData
+  }
+
+  const calcCost = (parts: ProductPart[]) => {
+    let sum = 0
+    parts.forEach(part => {      
+      if (part.price) {
+        sum += part.price
+      }
+    })
+    return sum
   }
 
   return (
