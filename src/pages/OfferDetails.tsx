@@ -10,9 +10,7 @@ const OfferDetails = ({ offers }: { offers: OfferType[] }) => {
   useEffect(() => {
     const result = offers.find(offer => offer.fileName === id)
     if (result) {
-      setOffer(result)
-      console.log(result);
-      
+      setOffer(result)      
     }
   }, [offers, id])
 

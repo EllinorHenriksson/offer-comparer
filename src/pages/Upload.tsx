@@ -106,11 +106,12 @@ const Upload = ({ offers, setOffers }: OfferProps) => {
             skipEmptyLines: true,
             dynamicTyping: true,
             complete: (results) => {
-              const productPartsWithChildren = transformData(results.data)
+              const productParts = transformData(results.data)
+              const nestedProductParts = nestProductParts(productParts)
               resolve({
                 fileName: file.name,
-                products: productPartsWithChildren,
-                cost: calcCost(productPartsWithChildren)
+                products: nestedProductParts,
+                cost: calcCost(productParts)
               })
             },
             error: (error, file) => {
@@ -148,29 +149,29 @@ const Upload = ({ offers, setOffers }: OfferProps) => {
     }
     })
 
-    return nestParts(parts)
+    return parts
   }
 
-  function nestParts (parts: ProductPartWithChildren[]): ProductPartWithChildren[] {
+  function nestProductParts (parts: ProductPartWithChildren[]): ProductPartWithChildren[] {
     const products = parts.filter(part => part.productPart.type === 'Product')
     products.forEach(product => {
-      recursiveFunction(product, parts)
+      nestRecursively(product, parts)
     })
 
     return products
   }
 
-  function recursiveFunction (parent: ProductPartWithChildren, parts: ProductPartWithChildren[]) {
+  function nestRecursively (parent: ProductPartWithChildren, parts: ProductPartWithChildren[]) {
     const children = parts.filter(part => part.productPart.parent === parent.productPart.name)
     parent.children = children
     children.forEach(child => {
-      recursiveFunction(child, parts)
+      nestRecursively(child, parts)
     })
   }
 
   const calcCost = (data: ProductPartWithChildren[]) => {
     let sum = 0
-    data.forEach(item => {      
+    data.forEach(item => {            
       if (item.productPart.price) {
         sum += item.productPart.price
       }

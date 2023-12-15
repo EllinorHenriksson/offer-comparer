@@ -143,75 +143,42 @@
 
 .offers a:hover {
 transform: translateX(5px);
-transition: 0.7s;
+transition: 0.5s;
 }
 
-/* Offer part */
-table {
-  border-collapse: collapse;
-}
-
-table {
-  border-bottom: 1px solid #333;
-}
-
-thead {
-  background-color: #f2f2f2;
-}
-
-th {
-  white-space: nowrap;
-  text-align: left;
-}
-
-th, td {
-  padding: 5px;
+/* OfferPart */
+.offer-part h3 {
+  margin: 10px 0;
 }
 
 .total-cost {
   text-align: right;
   font-weight: bold;
+  padding: 5px;
+  margin: 10px 0px;
 }
 
-/* ProductPart part */
-.product-part {
-  border: 1px solid black;
-}
-
+/* ProductPart */
 .headings {
-  display: flex;
+  display: grid;
+  grid-template-columns: 200px auto 100px 100px 100px;
+}
+
+.headings div {
+  font-weight: bold;
+  text-align: left;
+  padding: 5px;
+  background-color: #f2f2f2;
 }
 
 .parent-data {
-  display: flex;
+  display: grid;
+  grid-template-columns: 200px auto 100px 100px 100px;
 }
 
-.parent-name {
-  width: 30%;
-  background-color: #f14e35;
+.parent-data div {
+  text-align: left;
+  padding: 5px;
 }
 
-.parent-description {
-  width: 30%;
-  background-color: pink
-}
-
-.parent-failure-rate {
-  width: 10%;
-  background-color: #333;
-}
-
-.parent-quantity {
-  width: 10%;
-  background-color: aqua;
-}
-
-.parent-price {
-  width: 20%;
-  background-color: purple;
-}
-
-.children-container {
-  margin-left: 20px
-}
 
