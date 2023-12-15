@@ -1,12 +1,21 @@
 import { Link } from "react-router-dom";
-import { OfferProps } from "../types";
+import { OfferType } from "../types";
 
-const Offers = ({ offers, setOffers }: OfferProps) => {  
+/**
+ * Represents the Offers page.
+ *
+ * @param offers The offers that are currently uploaded to the application
+ */
+const Offers = ({ offers }: {offers: OfferType[]}) => {
   return (
     <div className="offers">
       <h2>Offers</h2>
-      <div>
-        {
+      {offers.length === 0 && <div>
+        <p>No offers could be found</p>
+        <Link to="/upload" className="large-button centered">Upload</Link>
+      </div>}
+      <div className="offer-preview-container">
+        {offers.length > 0 &&
           offers.map(offer => (
             <Link to={`/offers/${offer.fileName}`} key={offer.fileName}>
               <p>{offer.fileName}</p>

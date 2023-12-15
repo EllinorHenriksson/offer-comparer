@@ -1,5 +1,8 @@
 import { Link } from "react-router-dom";
 
+/**
+ * Represents a navigation bar.
+ */
 const Navbar = () => {
   return (
     <nav className="navbar">

@@ -1,12 +1,18 @@
 import { ProductPartWithChildren } from "../types";
 
+/**
+ * Represents a product part.
+ * 
+ * @param data The data of the offer (i.e. the product parts)
+ * @param padding The padding to apply to the name div to visually represent the nesting
+ */
 const ProductPart = ({ data, padding }: { data: ProductPartWithChildren[], padding: number }) => {
   return (
     <div className="product-part">
       {data.map(parent => {
         return (
           <div key={parent.productPart.name} className="parent-container">
-            <div className="parent-data">
+            <div className="parent-data grid-container">
               <div className="parent-name" style={{paddingLeft: `${padding}px`}}>
                 {parent.productPart.name && parent.productPart.name}
                 {!parent.productPart.name && '-'}

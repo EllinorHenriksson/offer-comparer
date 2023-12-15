@@ -9,6 +9,11 @@ import Navbar from "./parts/Navbar";
 import { useState } from "react";
 import { OfferType } from "./types";
 
+/**
+ * Represents an app for viewing and comparing product offers.
+ * 
+ * @returns The App component
+ */
 function App() {
   const [offers, setOffers] = useState<OfferType[]>([])
 
@@ -21,7 +26,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/upload" element={<Upload offers={offers} setOffers={setOffers} />} />
             <Route path="/offers/:id/*" element={<OfferDetails offers={offers} />} />
-            <Route path="/offers" element={<Offers offers={offers} setOffers={setOffers}/>} />
+            <Route path="/offers" element={<Offers offers={offers}/>} />
             <Route path="/compare" element={<Compare />} />
             <Route path="*" element={<PageNotFound />} />
           </Routes>

@@ -61,6 +61,8 @@
   border: none;
   border-radius: 5px;
   font-size: 1rem;
+  text-decoration: none;
+  display: block;
 }
 
 .large-button:hover, .small-button:hover {
@@ -72,13 +74,9 @@
   background-color: #f3ada2;
 }
 
-/* Home page */
-.home a:hover {
-  color: #f14e35;
-}
-
-.home a:active {
-  color: #f14e35;
+.centered {
+  display: block;
+  margin: 20px auto;
 }
 
 /* Upload page */
@@ -129,7 +127,7 @@
 }
 
 /* Offers page */
-.offers a {
+.offer-preview-container a {
   background-color: #f2f2f2;
   text-decoration: none;
   padding: 10px;
@@ -141,7 +139,7 @@
   justify-content: space-between;
 }
 
-.offers a:hover {
+.offer-preview-container a:hover {
 transform: translateX(5px);
 transition: 0.5s;
 }
@@ -159,7 +157,7 @@ transition: 0.5s;
 }
 
 /* ProductPart */
-.headings {
+.grid-container {
   display: grid;
   grid-template-columns: 200px auto 100px 100px 100px;
 }
@@ -169,11 +167,6 @@ transition: 0.5s;
   text-align: left;
   padding: 5px;
   background-color: #f2f2f2;
-}
-
-.parent-data {
-  display: grid;
-  grid-template-columns: 200px auto 100px 100px 100px;
 }
 
 .parent-data div {

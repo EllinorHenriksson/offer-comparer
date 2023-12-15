@@ -1,11 +1,16 @@
 import { OfferType } from "../types";
 import ProductPart from "./ProductPart";
 
+/**
+ * Represents an offer.
+ * 
+ * @param offer The offer to display
+ */
 const OfferPart = ({ offer }: { offer: OfferType }) => {
   return (
     <div className="offer-part">
       <h3>{offer.fileName}</h3>
-      <div className="headings">
+      <div className="headings grid-container">
         <div>Name</div>
         <div>Description</div>
         <div>Failure rate (1/year)</div>
